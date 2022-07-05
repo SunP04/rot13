@@ -1,3 +1,3 @@
-# rot_13_encoder_sun
-SImple Rot13 Encoder
-"# rot13" 
+# Rot13 Encoder
+
+My implementation of a rot13 encoder/decoder.
