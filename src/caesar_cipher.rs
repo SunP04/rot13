@@ -1,6 +1,7 @@
+use super::cipher::Cipher;
 use super::constants as ctt;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct CaesarCipher {
     pub word: String,
     move_amount: usize,
@@ -11,34 +12,23 @@ impl CaesarCipher {
         Self { word, move_amount }
     }
 
-    pub fn encode(&self) -> String {
-        let mut out = String::new();
-        self.run_encryption(&mut out, |a, b, c| self.add_encoded_to_string(a, b, c));
-
-        out
-    }
-
-    pub fn decode(&self) -> String {
-        let mut out = String::new();
-        self.run_encryption(&mut out, |x, y, z| self.add_decoded_to_string(x, y, z));
-        out
-    }
-
-    fn run_encryption<F>(&self, out: &mut String, func: F)
-    where
-        F: Fn(char, usize, usize) -> char,
-    {
-        let value: String = self
-            .word
+    fn run_encryption(&self) -> String {
+        self.word
             .chars()
             .map(|letter| match letter {
-                'A'..='Z' => func(letter, ctt::ASCII_UPPERCASE_Z, ctt::ASCII_UPPERCASE_A),
-                'a'..='z' => func(letter, ctt::ASCII_LOWERCASE_Z, ctt::ASCII_LOWERCASE_A),
+                'A'..='Z' => self.add_encoded_to_string(
+                    letter,
+                    ctt::ASCII_UPPERCASE_Z,
+                    ctt::ASCII_UPPERCASE_A,
+                ),
+                'a'..='z' => self.add_decoded_to_string(
+                    letter,
+                    ctt::ASCII_LOWERCASE_Z,
+                    ctt::ASCII_LOWERCASE_A,
+                ),
                 _ => letter,
             })
-            .collect();
-
-        out.push_str(&value);
+            .collect()
     }
 
     fn add_encoded_to_string(&self, value: char, max_value: usize, lowest_value: usize) -> char {
@@ -68,5 +58,48 @@ impl CaesarCipher {
 impl From<(String, usize)> for CaesarCipher {
     fn from((word, move_amount): (String, usize)) -> Self {
         Self::new(word, move_amount)
+    }
+}
+
+impl Cipher for CaesarCipher {
+    type Output = String;
+    fn encode(&self) -> Self::Output {
+        self.run_encryption()
+    }
+
+    fn decode(&self) -> Self::Output {
+        self.run_encryption()
+    }
+}
+
+impl std::ops::Add<usize> for CaesarCipher {
+    type Output = CaesarCipher;
+
+    fn add(self, rhs: usize) -> Self::Output {
+        CaesarCipher::new(self.word, self.move_amount + rhs)
+    }
+}
+
+impl std::ops::Sub<usize> for CaesarCipher {
+    type Output = CaesarCipher;
+
+    fn sub(self, rhs: usize) -> Self::Output {
+        CaesarCipher::new(self.word, self.move_amount - rhs)
+    }
+}
+
+impl std::ops::Mul<usize> for CaesarCipher {
+    type Output = CaesarCipher;
+
+    fn mul(self, rhs: usize) -> Self::Output {
+        CaesarCipher::new(self.word, self.move_amount * rhs)
+    }
+}
+
+impl std::ops::Div<usize> for CaesarCipher {
+    type Output = CaesarCipher;
+
+    fn div(self, rhs: usize) -> Self::Output {
+        CaesarCipher::new(self.word, self.move_amount / rhs)
     }
 }
