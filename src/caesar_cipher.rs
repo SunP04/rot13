@@ -4,7 +4,7 @@ use super::constants as ctt;
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct CaesarCipher {
     pub word: String,
-    move_amount: usize,
+    pub move_amount: usize,
 }
 
 impl CaesarCipher {
