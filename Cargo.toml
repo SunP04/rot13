@@ -1,6 +1,11 @@
 [package]
-name = "rot_thirteen_encoder"
+name = "rot13"
 version = "0.1.0"
 edition = "2021"
+authors = ["SunP04"]
+description = "A simple library for Caesar Ciphers."
+license = "MIT"
+repository = "https://github.com/SunP04/rot13"
+homepage = "https://github.com/SunP04/rot13"
 
 [dependencies]

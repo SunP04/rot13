@@ -1,4 +1,4 @@
-use rot_thirteen_encoder::{caesar_cipher::CaesarCipher, Cipher};
+use rot13::{caesar_cipher::CaesarCipher, Cipher};
 
 #[test]
 fn it_can_create_objects() {

@@ -1,17 +1,33 @@
 use super::cipher::Cipher;
 use super::constants as ctt;
 
+/// Defines a base of a CeasarCipher.
+/// Can be created manually or by calling CaesarCipher::new
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct CaesarCipher {
+    /// The word that will be used in the cipher.
     pub word: String,
+    /// The amount of steps the cipher will have to take.
     pub move_amount: usize,
 }
 
 impl CaesarCipher {
+    /// Creates a new instance of a CaesarCipher.
+    /// Alternative for creating a new Cipher manually.
+    /// ```rs
+    /// use rot13::CaesarCipher;
+    /// fn main() {
+    ///    let cipher = CaesarCipher::new("Hello".into(), 13);
+    ///    assert_eq!("Hello", cipher.word);
+    ///    assert_eq!(13, cipher.move_amount);
+    /// }
+    /// ```
     pub fn new(word: String, move_amount: usize) -> Self {
         Self { word, move_amount }
     }
 
+    /// Runs the encription for the given string.
+    /// User may call it by using the rot13::Cipher trait.
     fn run_encryption(&self) -> String {
         self.word
             .chars()
